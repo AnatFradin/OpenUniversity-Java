@@ -108,17 +108,17 @@ public class GameLogic {
             return new Result(false, 0,0, number + " is not a valid Number. " + validationResult);
         }
         
-        int bul = 0;
-        int pgia = 0;
+        int exactHit = 0;
+        int hit = 0;
         for (int i = 0; i < checkNumAsArray.length; i++) {
             if ( numberAsArray[i] == checkNumAsArray[i]){
-                bul++;
-                pgia++;
+                exactHit++;
+                hit++;
             }
             else{
                for (int j = 0; j < numberAsArray.length; j++) { 
                    if(numberAsArray[j] == checkNumAsArray[i]){
-                       pgia++;
+                       hit++;
                        break;
                    }
                }
@@ -127,11 +127,11 @@ public class GameLogic {
         }
         numberOfGuesses++;
         Result res;
-        if(bul == numberAsArray.length){
-            res = new Result(true, bul, pgia);
+        if(exactHit == numberAsArray.length){
+            res = new Result(true, exactHit, hit);
         }
         else{
-            res = new Result(false, bul, pgia);
+            res = new Result(false, exactHit, hit);
         }
         
         return res;

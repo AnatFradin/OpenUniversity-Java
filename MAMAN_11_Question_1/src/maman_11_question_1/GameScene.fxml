@@ -33,7 +33,7 @@
             <RowConstraints maxHeight="210.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="inputFromUser" onAction="#OnPressedNewGuess" GridPane.rowIndex="1" />
+            <TextField fx:id="inputFromUser" onAction="#onPressedNewGuess" GridPane.rowIndex="1" />
             <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onPressedNewGuess" text="New Guess" textAlignment="CENTER" GridPane.rowIndex="2" />
             <Label text="Enter new gues" />
          </children>

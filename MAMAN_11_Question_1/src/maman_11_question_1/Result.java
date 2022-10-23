@@ -10,42 +10,42 @@ package maman_11_question_1;
  */
 public class Result {
     private boolean guessOK = false;
-    private int numberOfBool = 0;
-    private int numberOfPgia = 0;
+    private int numberOfExactHit = 0;
+    private int numberOfHit = 0;
     private String errorString = null;
 
     public String getErrorString() {
         return errorString;
     }
     
-    public Result(boolean result, int bool, int pgia, String error){
+    public Result(boolean result, int exactHit, int hit, String error){
         guessOK = result;
-        numberOfBool = bool;
-        numberOfPgia = pgia;
+        numberOfExactHit = exactHit;
+        numberOfHit = hit;
         errorString = error;
     }
     
-    public Result(boolean result, int bool, int pgia){
+    public Result(boolean result, int exactHit, int hit){
         guessOK = result;
-        numberOfBool = bool;
-        numberOfPgia = pgia;
+        numberOfExactHit = exactHit;
+        numberOfHit = hit;
     }
 
     public boolean isGuessOK() {
         return guessOK;
     }
 
-    public int getNumberOfBool() {
-        return numberOfBool;
+    public int getNumberOfExactHit() {
+        return numberOfExactHit;
     }
 
-    public int getNumberOfPgia() {
-        return numberOfPgia;
+    public int getNumberOfHit() {
+        return numberOfHit;
     }
     
     @Override
     public String toString(){
-        return this.errorString!= null?"ERROR ":"" + "Bul: " + this.numberOfBool + " Pgia: " + this.numberOfPgia;
+        return this.errorString!= null?"ERROR ":"" + "ExactHit: " + this.numberOfExactHit + " Hit: " + this.numberOfHit;
     } 
     
     

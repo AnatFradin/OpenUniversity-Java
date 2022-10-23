@@ -85,9 +85,5 @@ public class GameSceneController implements Initializable {
             showDetails("No Game started");
         }
     }
-
-    @FXML
-    private void OnPressedNewGuess(ActionEvent event) {
-    }
-    
+   
 }
