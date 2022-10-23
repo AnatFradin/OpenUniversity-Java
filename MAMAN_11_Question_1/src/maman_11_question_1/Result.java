@@ -45,8 +45,7 @@ public class Result {
     
     @Override
     public String toString(){
-        return this.errorString!= null?"ERROR ":"" + " Guess: " + 
-                this.guessOK + " Bul: " + this.numberOfBool + " Pgia: " + this.numberOfPgia;
+        return this.errorString!= null?"ERROR ":"" + "Bul: " + this.numberOfBool + " Pgia: " + this.numberOfPgia;
     } 
     
     

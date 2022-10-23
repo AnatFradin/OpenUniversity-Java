@@ -16,25 +16,27 @@ public class GameLogic {
     private int[] numberAsArray = new int[4];
     private int number = -1;
     private int numberOfGuesses = 0;
-    private StringBuilder guessesHistory = new StringBuilder();
+
+    public int getNumberOfGuesses() {
+        return numberOfGuesses;
+    }
     
     public GameLogic(){
     }
 
-    public void StartNewGame() {
+    public void startNewGame() {
         number = 0;
         numberOfGuesses = 0;
-        guessesHistory = new StringBuilder();
-        GenerateNewNumber();
+        generateNewNumber();
         
     }
     
-    private void GenerateNewNumber() {
+    private void generateNewNumber() {
         int[] randomArray = new int[10];
        
-        numberAsArray[0] = RandomDigit(10,false, randomArray);
+        numberAsArray[0] = randomDigit(10,false, randomArray);
         for (int i = 1; i < numberAsArray.length; i++) {
-            numberAsArray[i] = RandomDigit(10,true, randomArray);
+            numberAsArray[i] = randomDigit(10,true, randomArray);
         }
         
         for (int i = 0; i < numberAsArray.length; i++) {
@@ -45,7 +47,7 @@ public class GameLogic {
     }
     
     // Generate random digit, without duplication accordin to ValidationArray
-    private int RandomDigit(int max, boolean zeroIncluded, int[] validationArray){
+    private int randomDigit(int max, boolean zeroIncluded, int[] validationArray){
         Random rand = new Random();
         boolean haveNumberToGuess = false;
         // validate we have number to guess
@@ -60,7 +62,7 @@ public class GameLogic {
             System.out.println("We have no numbers to create random integer");
         
         while (haveNumberToGuess) { 
-            int num = rand.nextInt(max + 1);
+            int num = rand.nextInt(max);
             if(!zeroIncluded && num == 0)
                 continue;
             if (validationArray[num] == 0) {
@@ -71,48 +73,39 @@ public class GameLogic {
         return -1;
     }
     
-    private boolean ValidateNumber(int number) {
+    private String validateNumber(int number) {
         if (number > 9999 || number < 1000) {
-            System.out.println("Number should be between 1000 and 9999");
-            return false;
+            return ("Number should be between 1000 and 9999");
         }
-        return true;
+        return null;
     }
     
-    private boolean ConvertIntToIntArray(int numberToConvert, int[]array){
+    private String convertIntToIntArray(int numberToConvert, int[]array){
         int tmp;
         int[] validationArray = new int[10];
         for (int i = array.length-1; i >= 0; i--) {
             tmp = numberToConvert % 10;
             // check that we dont hava same digit already
             if(validationArray[tmp]++ > 0){
-                System.out.println("Digit " + tmp + " appears more than once");
-                 return false;
+                return("Digit " + tmp + " appears more than once");
             }
             array[i] = tmp;
             numberToConvert = numberToConvert/10;   
         }
-        return true;
+        return null;
     }
+   
     
-    public String getNubersAsArray(){
-        return Arrays.toString(numberAsArray);
-    }
-    
-    public Result CheckGuess(int number){
-        if (!ValidateNumber(number)){
-            Result res =  new Result(false, 0,0, "Not valid Number");
-            guessesHistory.append("\n").append(res.toString());
-            return res;
+    public Result checkGuess(int number){
+        String validationResult = validateNumber(number);
+        if (validationResult!= null){
+            return new Result(false, 0,0, number + " is not a valid Number. " + validationResult);
         }
-            
         
         int [] checkNumAsArray = new int[4];
-        
-        if (!ConvertIntToIntArray(number,checkNumAsArray)){
-            Result res =  new Result(false, 0,0, "Not valid Number");
-            guessesHistory.append("\n").append(res.toString());
-            return res;
+        validationResult = convertIntToIntArray(number,checkNumAsArray);
+        if (validationResult!= null){
+            return new Result(false, 0,0, number + " is not a valid Number. " + validationResult);
         }
         
         int bul = 0;
@@ -132,6 +125,7 @@ public class GameLogic {
             }
             
         }
+        numberOfGuesses++;
         Result res;
         if(bul == numberAsArray.length){
             res = new Result(true, bul, pgia);
@@ -140,8 +134,6 @@ public class GameLogic {
             res = new Result(false, bul, pgia);
         }
         
-        guessesHistory.append("\n").append(res.toString());
         return res;
-            
     }
 }
