@@ -12,18 +12,28 @@ import java.util.Random;
  */
 public class GameBoard {
 
+
     private enum State{
-        Alive,
         Die,
+        Alive,
         NA // if no value set
     }
     
     private int [][] theBoard;
+    private int [][] paddedBoard;
+    
+    private int initiallBoardSize;
     
     public GameBoard(int boardSize) {
         this.theBoard = new int[boardSize][boardSize];
+        this.paddedBoard = new int[boardSize+2][boardSize+2];
+        initiallBoardSize = boardSize;
         FillTheBoard();
-        PrintTheBoard();
+        PrintTheBoard(theBoard);
+        PrintPaddedTheBoard();
+        MakeNewGeneration();
+        PrintTheBoard(theBoard);
+        PrintPaddedTheBoard();
     }
 
     /** 
@@ -34,15 +44,27 @@ public class GameBoard {
         for (int i = 0; i < theBoard.length; i++) {
             for (int j = 0; j < theBoard.length; j++) {
                 theBoard[i][j] = rand.nextInt(2);
+                paddedBoard[i+1][j+1] = theBoard[i][j];
             }
         }
 
     }
 
-    private void PrintTheBoard() {
+    private void PrintTheBoard(int [][] boardToPrint) {
+        System.out.println("Real without padding");
         for (int i = 0; i < theBoard.length; i++) {
             for (int j = 0; j < theBoard.length; j++) {
-                System.out.print(theBoard[i][j] + " ");
+                System.out.print(boardToPrint[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    private void PrintPaddedTheBoard() {
+        System.out.println("Board with padding");
+        for (int i = 0; i < paddedBoard.length; i++) {
+            for (int j = 0; j < paddedBoard.length; j++) {
+                System.out.print(paddedBoard[i][j] + " ");
             }
             System.out.println();
         }
@@ -52,36 +74,64 @@ public class GameBoard {
         int [][] newGenerationBoard = new int [theBoard.length][theBoard.length];
         for (int i = 0; i < theBoard.length; i++) {
             for (int j = 0; j < theBoard.length; j++) {
-                Check(newGenerationBoard, i,j)
+                newGenerationBoard[i][j] = MakeDecision(i,j).ordinal();
             }
-            System.out.println();
         }
-    }
-
-    private void Check(int[][] newGenerationBoard, int i, int j) {
-
-        int[] testBoard = new int[8];
-        testBoard = fillTestBoard(i, j);
-        newGenerationBoard[i][j] = MakeDecision(i, j);
+        theBoard = newGenerationBoard;
+        UpdatePaddedBoard();
     }
     
-     private int[] fillTestBoard(int i, int j) {
-        // Find new generation for cell in top row;
-        if (i == 0) {
-
-        } 
-        
-// Find new generation for cell in last row;
-        else if (i == newGenerationBoard.length) {
-
-        } // calculate new generation for cell in first Column
-        else if (j == 0) {
-
-        } // calculate new generation for cell in last Column
-        else if (j == newGenerationBoard.length) {
-
+    private void UpdatePaddedBoard(){
+        for (int i = 0; i < theBoard.length; i++) {
+            System.arraycopy(theBoard[i], 0, paddedBoard[i+1], 1, theBoard.length);
         }
-
-        // calculate new generation for middle cell
+    }
+     
+    private State MakeDecision(int i, int j) {
+        int [] neighbors = new int [8];
+        neighbors = FindMyNeighbors(i,j);
+        
+        int numOfAlives = 0;
+        for (int k = 0; k < neighbors.length; k++) {
+            if(neighbors[k] == 1)
+                numOfAlives++;
+        }
+        
+        if(theBoard[i][j] == 1){ // now alive
+            if(numOfAlives == 2 || numOfAlives == 3){
+                return State.Alive;
+            }
+            else
+                return State.Die;
+        }
+        
+        if(theBoard[i][j] == 0){ // now die
+            if(numOfAlives ==3 ){
+                return State.Alive;
+            }
+        }
+        
+        return State.Die;
+    }
+    
+    private int[] FindMyNeighbors(int i, int j) {
+        int padded_i = i+1;
+        int padded_j = j+1;
+        int [] neighbors = new int [8];
+        int neighborIndex = 0;
+        
+        neighbors[neighborIndex++] = paddedBoard[padded_i-1][padded_j-1];
+        neighbors[neighborIndex++] = paddedBoard[padded_i-1][padded_j];
+        neighbors[neighborIndex++] = paddedBoard[padded_i-1][padded_j+1];
+        
+        neighbors[neighborIndex++] = paddedBoard[padded_i][padded_j-1];
+        neighbors[neighborIndex++] = paddedBoard[padded_i][padded_j+1];
+        
+        
+        neighbors[neighborIndex++] = paddedBoard[padded_i+1][padded_j-1];
+        neighbors[neighborIndex++] = paddedBoard[padded_i+1][padded_j];
+        neighbors[neighborIndex++] = paddedBoard[padded_i+1][padded_j+1];
+    
+        return neighbors;
     }
 }
