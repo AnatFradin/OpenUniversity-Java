@@ -42,8 +42,6 @@ public class GameLogic {
         for (int i = 0; i < numberAsArray.length; i++) {
             number = number * 10 + numberAsArray[i];
         }
-        
-        System.out.println("New number to Guess is " + number);
     }
     
     // Generate random digit, without duplication accordin to ValidationArray
@@ -58,8 +56,10 @@ public class GameLogic {
             }
         }
         
-        if(!haveNumberToGuess)
+        if(!haveNumberToGuess){
             System.out.println("We have no numbers to create random integer");
+            return -1;
+        }
         
         while (haveNumberToGuess) { 
             int num = rand.nextInt(max);

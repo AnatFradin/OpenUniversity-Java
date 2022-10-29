@@ -28,7 +28,7 @@ public class GameSceneController implements Initializable {
     @FXML
     private TextField inputFromUser;
     
-    private GameLogic game = new GameLogic();
+    private final GameLogic game = new GameLogic();
 
     /**
      * Initializes the controller class.

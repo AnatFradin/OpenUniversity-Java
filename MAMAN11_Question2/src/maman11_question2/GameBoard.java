@@ -15,81 +15,81 @@ public class GameBoard {
 
     private enum State{
         Die,
-        Alive,
-        NA // if no value set
+        Alive
     }
     
-    private int [][] theBoard;
-    private int [][] paddedBoard;
+    private int [][] gameBoard;
     
-    private int initiallBoardSize;
+    /* same borad as gameBoard, but has additional padding lines & columns of zero
+               00000
+    101        01010
+    011    --> 00110
+    111        01110
+               00000
+    */
+    private final int [][] paddedBoard;
+ 
+    private final int boardSize;
     
     public GameBoard(int boardSize) {
-        this.theBoard = new int[boardSize][boardSize];
+        this.gameBoard = new int[boardSize][boardSize];
         this.paddedBoard = new int[boardSize+2][boardSize+2];
-        initiallBoardSize = boardSize;
-        FillTheBoard();
-        PrintTheBoard(theBoard);
-        PrintPaddedTheBoard();
-        MakeNewGeneration();
-        PrintTheBoard(theBoard);
-        PrintPaddedTheBoard();
+        this.boardSize = boardSize;
+        fllTheBoard();
+        printBoard();
     }
 
     /** 
      * Fill the board with random 1 / 0 values
      */
-    private void FillTheBoard() {
+    private void fllTheBoard() {
         Random rand = new Random(); 
-        for (int i = 0; i < theBoard.length; i++) {
-            for (int j = 0; j < theBoard.length; j++) {
-                theBoard[i][j] = rand.nextInt(2);
-                paddedBoard[i+1][j+1] = theBoard[i][j];
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard.length; j++) {
+                gameBoard[i][j] = rand.nextInt(2);
+                paddedBoard[i+1][j+1] = gameBoard[i][j];
             }
         }
-
     }
 
-    private void PrintTheBoard(int [][] boardToPrint) {
+    private void printBoard() {
         System.out.println("Real without padding");
-        for (int i = 0; i < theBoard.length; i++) {
-            for (int j = 0; j < theBoard.length; j++) {
-                System.out.print(boardToPrint[i][j] + " ");
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard.length; j++) {
+                System.out.print(gameBoard[i][j] + " ");
             }
             System.out.println();
         }
     }
     
-    private void PrintPaddedTheBoard() {
-        System.out.println("Board with padding");
-        for (int i = 0; i < paddedBoard.length; i++) {
-            for (int j = 0; j < paddedBoard.length; j++) {
-                System.out.print(paddedBoard[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-    
-    public void MakeNewGeneration(){
-        int [][] newGenerationBoard = new int [theBoard.length][theBoard.length];
-        for (int i = 0; i < theBoard.length; i++) {
-            for (int j = 0; j < theBoard.length; j++) {
-                newGenerationBoard[i][j] = MakeDecision(i,j).ordinal();
+    public void makeNewGeneration(){
+        int [][] newGenerationBoard = new int [gameBoard.length][gameBoard.length];
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard.length; j++) {
+                newGenerationBoard[i][j] = makeDecision(i,j).ordinal();
             }
         }
-        theBoard = newGenerationBoard;
-        UpdatePaddedBoard();
+        gameBoard = newGenerationBoard;
+        updatePaddedBoard();
+        printBoard();
     }
     
-    private void UpdatePaddedBoard(){
-        for (int i = 0; i < theBoard.length; i++) {
-            System.arraycopy(theBoard[i], 0, paddedBoard[i+1], 1, theBoard.length);
+    private void updatePaddedBoard(){
+        for (int i = 0; i < gameBoard.length; i++) {
+            System.arraycopy(gameBoard[i], 0, paddedBoard[i+1], 1, gameBoard.length);
         }
     }
      
-    private State MakeDecision(int i, int j) {
+    /**
+     * This method decides if in next generation specific
+     * cell will reBorn / remain / die
+     * @param i
+     * @param j
+     * @return 
+     */
+    private State makeDecision(int i, int j) {
         int [] neighbors = new int [8];
-        neighbors = FindMyNeighbors(i,j);
+        neighbors = findMyNeighbors(i,j);
         
         int numOfAlives = 0;
         for (int k = 0; k < neighbors.length; k++) {
@@ -97,7 +97,7 @@ public class GameBoard {
                 numOfAlives++;
         }
         
-        if(theBoard[i][j] == 1){ // now alive
+        if(gameBoard[i][j] == 1){ // now alive
             if(numOfAlives == 2 || numOfAlives == 3){
                 return State.Alive;
             }
@@ -105,7 +105,7 @@ public class GameBoard {
                 return State.Die;
         }
         
-        if(theBoard[i][j] == 0){ // now die
+        if(gameBoard[i][j] == 0){ // now die
             if(numOfAlives ==3 ){
                 return State.Alive;
             }
@@ -114,7 +114,14 @@ public class GameBoard {
         return State.Die;
     }
     
-    private int[] FindMyNeighbors(int i, int j) {
+    /**
+     * This method will return array of all 8 neighbors of the cell.
+     * Because we have PaddedBoard , we never need to check the edges 
+     * @param i
+     * @param j
+     * @return 
+     */
+    private int[] findMyNeighbors(int i, int j) {
         int padded_i = i+1;
         int padded_j = j+1;
         int [] neighbors = new int [8];
@@ -133,5 +140,13 @@ public class GameBoard {
         neighbors[neighborIndex++] = paddedBoard[padded_i+1][padded_j+1];
     
         return neighbors;
+    }
+    
+    public int[][] getBoard() {
+        return gameBoard;
+    }
+
+    public int getBoardSize() {
+        return boardSize;
     }
 }
