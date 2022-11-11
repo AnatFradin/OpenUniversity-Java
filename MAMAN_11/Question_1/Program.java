@@ -5,24 +5,19 @@
 package maman_11_question_1;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
  *
  * @author anatfradin
  */
-public class MAMAN_11_Question_1 extends Application {
+public class Program extends Application {
     
     @Override
     public void start(Stage primaryStage) {
@@ -36,7 +31,7 @@ public class MAMAN_11_Question_1 extends Application {
             primaryStage.show();
 
         } catch (IOException ex) {
-            Logger.getLogger(MAMAN_11_Question_1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
