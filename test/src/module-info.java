@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author anatfradin
+ *
+ */
+module test {
+}

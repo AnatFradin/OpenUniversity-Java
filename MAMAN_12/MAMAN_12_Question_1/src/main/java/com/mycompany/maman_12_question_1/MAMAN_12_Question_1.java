@@ -5,7 +5,6 @@
 package com.mycompany.maman_12_question_1;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -14,113 +13,107 @@ import java.util.Random;
  */
 public class MAMAN_12_Question_1 {
 
+    enum MATH_SIGN{
+        PLUS, //0
+        MINUS //1
+    }
     private static Random rand = new Random();
 
-    // generate numbers in bound (-bound > number < +bound)
-    private static int bound = 30;
-    private static int bound_double = 100;
+    private static final int bound_double = 100;
 
     public static void main(String[] args) {
         ArrayList<Expression> array = generateArray(10);
 
-        System.out.println("The array is: ");
-        
-        for (Expression next : array) {
-            System.out.print(next.toString() + " ");
-        }
-
-        System.out.println("The result is: ");
+        System.out.println("Calculate each Expression: ");
         
         for (Expression next : array) {
             System.out.println(next.toString() + " = " + next.calculate());
         }
 
         System.out.println("compare: ");
+        boolean equalFound = false;
         
         for (int i = 0; i < array.size()-1; i++) {
             Expression exp_1 = array.get(i);
             for (int j = i+1; j < array.size(); j++) {
                 Expression exp_2 = array.get(j);
                 if (exp_1.equals(exp_2)) {
+                    equalFound = true;
                     System.out.println(exp_1.toString() + " == " + exp_2.toString());
                 }
             }
         }
-        System.out.println("Done");
-        
+       
+        System.out.println("Done. " + 
+                (equalFound ? "Equal expression FOUND" : "Equal expression NOT FOUND" ));
 
     }
 
     private static ArrayList<Expression> generateArray(int size) {
         ArrayList array = new ArrayList<Expression>();
-
+        
         for (int i = 0; i < size; i++) {
+            
             // 0 - AtomicExpression
-            // 1 - pure AdditionExpression -> 3+4
-            // 2 - pure SubtractionExpression -> 4-6
-            // 3 - AdditionExpression -> (3-2) + 4
-            // 4 - pure SubtractionExpression -> 4-6
-            int kindOfExpression = rand.nextInt(3);
-
-            switch (kindOfExpression) {
-                case 0:
-                    array.add(createAtomicExpression());
-                    break;
-
-                case 1:
-                    array.add(createPureAdditionExpression());
-                    break;
-
-                case 2:
-                    array.add(createPureSubtractionExpression());
-                    break;
-                default:
-                    throw new AssertionError();
+            // 1 - CompoundExpression
+            int kindOfExpression = generateRandomIntNumber(10);
+            int depth = 0;
+            
+            if (kindOfExpression % 2 == 0){ // even number -> CompoundExpression 
+                depth = generateRandomIntNumber(10);
             }
+            
+            // fill affay with random AtomicExpression objects. Later
+            // they will used to freate Compound expressions.
+            AtomicExpression [] aExpression = new AtomicExpression[depth +1];
+            for (int index=0; index < aExpression.length; index ++){
+                aExpression[index] = createAtomicExpression();
+            }
+            
+            Expression aExp = aExpression[0];
+                
+            for (int j = 1; j < aExpression.length; j++) {
+                Expression bExp = aExpression[j];
+                aExp = createdRandomCompound(aExp,bExp);
+                
+            }
+            array.add(aExp);
         }
-
         return array;
     }
 
     private static AtomicExpression createAtomicExpression() {
-        AtomicExpression expression = new AtomicExpression(generateRandomNumber());
-        System.out.println("AtomicExpression: " + expression.toString());
+        AtomicExpression expression = 
+                new AtomicExpression(generateRandomDoubleNumber(bound_double));
         return expression;
     }
 
-    private static AdditionExpression createPureAdditionExpression() {
-        Expression exp1 = createAtomicExpression();
-        Expression exp2 = createAtomicExpression();
-        AdditionExpression expression = new AdditionExpression(exp1, exp2);
-        System.out.println("AdditionExpression: " + expression.toString());
-        return expression;
+    private static Expression createdRandomCompound(Expression aExp, Expression bExp) {
+        Expression newExpression;
+        int kindOfExpression = rand.nextInt(2);
+        
+        if(kindOfExpression == MATH_SIGN.PLUS.ordinal()){
+            newExpression = new  AdditionExpression(aExp, bExp);
+        }else{
+            newExpression = new  SubtractionExpression(aExp, bExp);
+        }
+        
+        return newExpression;
     }
 
-    private static AdditionExpression createAdditionExpression() {
-        Expression exp1 = createPureSubtractionExpression();
-        Expression exp2 = createAtomicExpression();
-        AdditionExpression expression = new AdditionExpression(exp1, exp2);
-        System.out.println("AdditionExpression: " + expression.toString());
-        return expression;
-    }
 
-    private static SubtractionExpression createPureSubtractionExpression() {
-        Expression exp1 = createAtomicExpression();
-        Expression exp2 = createAtomicExpression();
-        SubtractionExpression expression = new SubtractionExpression(exp1, exp2);
-        System.out.println("SubtractionExpression: " + expression.toString());
-        return expression;
+    private static double generateRandomDoubleNumber(int bound_double) {
+        
+        //rand.nextDouble()* 2 - 1 -> generate negative and positive numbers
+        // bound_double = number of digits in the number
+        
+        double num = (rand.nextDouble()* 2 - 1 )* bound_double;
+        return  Math.floor(num * 100) / 100;
     }
-
-    private static SubtractionExpression createSubtractionExpression() {
-        Expression exp1 = createPureAdditionExpression();
-        Expression exp2 = createAtomicExpression();
-        SubtractionExpression expression = new SubtractionExpression(exp1, exp2);
-        System.out.println("SubtractionExpression: " + expression.toString());
-        return expression;
+    
+    private static int generateRandomIntNumber(int bound_double) {
+        double num = rand.nextDouble() * bound_double;
+        return  (int)num;
     }
-
-    private static double generateRandomNumber() {
-        return rand.nextDouble() * bound_double - bound;
-    }
+    
 }
