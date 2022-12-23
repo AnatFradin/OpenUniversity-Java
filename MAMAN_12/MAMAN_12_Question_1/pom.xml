@@ -7,8 +7,24 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <exec.mainClass>com.mycompany.maman_12_question_1.MAMAN_12_Question_1</exec.mainClass>
     </properties>
+    <build>
+    <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+          <configuration>
+              <archive>
+                  <manifest>
+                      <mainClass>com.mycompany.maman_12_question_1.MAMAN_12_Question_1</mainClass>
+                  </manifest>
+              </archive>
+          </configuration>
+      </plugin>
+  </plugins>
+</build>
 </project>
