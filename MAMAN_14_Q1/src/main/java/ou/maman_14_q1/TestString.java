@@ -13,32 +13,38 @@ import java.util.Iterator;
  */
 public class TestString {
 
-    public boolean runTest() {
-        System.out.println("\nRunning runTest1" );
-        boolean result = runTest1();
-        System.out.println("\nrunTest1 : " + result);
+    public static boolean runTest() {
         
-        System.out.println("\nRunning runTest2" );
-        result = runTest2();
-        System.out.println("\nrunTest2 : " + result);
+        boolean commonTestResult = true;
+        boolean result = runTest_add_orderCorrect();
+        commonTestResult &= result;
+        System.out.println("\nTestString -> runTest_add_orderCorrect Result: " + result);
+
+        result = runTest_remove();
+        commonTestResult &= result;
+        System.out.println("\nTestString -> runTest_remove Result: " + result);
+
+        result = runTest_Add_Remove();
+        commonTestResult &= result;
+        System.out.println("\nTestString -> runTest_Add_Remove Result: " + result);
         
-        System.out.println("\nRunning runTest3" );
-        result = runTest3();
-        System.out.println("\nrunTest3 : " + result);
+        result = runTest_Poll_Remove();
+        commonTestResult &= result;
+        System.out.println("\nTestString -> runTest_Poll_Remove Result: " + result);
         
         
-        return result;
+        return commonTestResult;
     }
 
-    private void printAll(Iterator<String> iterator) {
+    private static void printAll(Iterator<String> iterator) {
         for (; iterator.hasNext();) {
             String next = (String) iterator.next();
             System.out.print(" <" + next + "> ");
         }
     }
 
-    private boolean runTest1() {
-          PriorityQueue<String> queue = new PriorityQueue<>(8);
+    private static boolean runTest_add_orderCorrect() {
+        PriorityQueue<String> queue = new PriorityQueue<>(8);
 
         ArrayList<TestObject<String>> testArr = new ArrayList();
 
@@ -51,24 +57,10 @@ public class TestString {
             queue.add(testObject.getItem(), testObject.getPriority());
         }
 
-        int index = 0;
-        for (Iterator iterator = queue.iterator(); iterator.hasNext();) {
-            String next = (String) iterator.next();
-
-            if (!next.equals(testArr.get(index).getItem())) {
-                System.out.println("Test Failed. Expected <" + testArr.get(index).getItem() + "> "
-                        + "Got <" + next + ">.");
-                printAll(queue.iterator());
-                return false;
-            }
-            index++;
-        }
-        printAll(queue.iterator());
-
-        return true;
+        return testBothArraysAreEqual(queue.iterator(),testArr.iterator());
     }
     
-    private boolean runTest2() {
+    private static boolean runTest_remove() {
           PriorityQueue<String> queue = new PriorityQueue<>(8);
 
         ArrayList<TestObject<String>> testArr = new ArrayList();
@@ -85,25 +77,11 @@ public class TestString {
         queue.remove("Lolita");
         testArr.remove(1);
         
-        int index = 0;
-        for (Iterator iterator = queue.iterator(); iterator.hasNext();) {
-            String next = (String) iterator.next();
-
-            if (!next.equals(testArr.get(index).getItem())) {
-                System.out.println("Test Failed. Expected <" + testArr.get(index).getItem() + "> "
-                        + "Got <" + next + ">.");
-                printAll(queue.iterator());
-                return false;
-            }
-            index++;
-        }
-        printAll(queue.iterator());
-
-        return true;
+        return testBothArraysAreEqual(queue.iterator(),testArr.iterator());
     }
     
-    private boolean runTest3() {
-          PriorityQueue<String> queue = new PriorityQueue<>(8);
+    private static boolean runTest_Add_Remove() {
+        PriorityQueue<String> queue = new PriorityQueue<>(8);
 
         ArrayList<TestObject<String>> testArr = new ArrayList();
 
@@ -122,20 +100,65 @@ public class TestString {
         queue.add("DARKNESS AT NOON",2);
         testArr.add(1,new TestObject<String>("DARKNESS AT NOON", 1));
         
-        
-        int index = 0;
-        for (Iterator iterator = queue.iterator(); iterator.hasNext();) {
-            String next = (String) iterator.next();
+        return testBothArraysAreEqual(queue.iterator(),testArr.iterator());
 
-            if (!next.equals(testArr.get(index).getItem())) {
-                System.out.println("Test Failed. Expected <" + testArr.get(index).getItem() + "> "
-                        + "Got <" + next + ">.");
-                printAll(queue.iterator());
+    }
+    
+    private static boolean runTest_Poll_Remove() {
+          PriorityQueue<String> queue = new PriorityQueue<>(8);
+
+        ArrayList<TestObject<String>> testArr = new ArrayList();
+
+        testArr.add(new TestObject<String>("THE GREAT GATSBY", 1));
+        testArr.add(new TestObject<String>("Lolita", 1));
+        testArr.add(new TestObject<String>("BRAVE NEW WORLD", 4));
+        testArr.add(new TestObject<String>("CATCH-22", 8));
+
+        for (TestObject<String> testObject : testArr) {
+            queue.add(testObject.getItem(), testObject.getPriority());
+        }
+
+        String highest = queue.poll();
+        if(!highest.equals("THE GREAT GATSBY")){
+            System.out.println("Failed. Expected < THE GREAT GATSBY >" +
+                        "Got <" + highest + ">.");
+            printAll(queue.iterator());
+            return false;
+        }
+        
+        queue.remove("THE GREAT GATSBY");
+        
+        highest = queue.poll();
+        if(!highest.equals("Lolita")){
+            System.out.println("Failed. Expected < Lolita >" +
+                        "Got <" + highest + ">.");
+            
+            printAll(queue.iterator());
+            return false;
+        }
+        return true;
+    }
+    
+    private static boolean testBothArraysAreEqual(Iterator<String> queueIterator,
+            Iterator<TestObject<String>> testIterator) {
+
+        while (queueIterator.hasNext() && testIterator.hasNext()) {
+            String valFromQueue = queueIterator.next();
+            String valFromTestArray = testIterator.next().getItem();
+            
+            if (!valFromQueue.equals(valFromTestArray)) {
+                
+                System.out.println("Failed. Expected <" + valFromTestArray + "> "
+                        + "Got <" + valFromQueue + ">.");
+                printAll(queueIterator);
+                
                 return false;
             }
-            index++;
         }
-        printAll(queue.iterator());
+
+        if (queueIterator.hasNext() || testIterator.hasNext()) {
+            return false;
+        }
 
         return true;
     }

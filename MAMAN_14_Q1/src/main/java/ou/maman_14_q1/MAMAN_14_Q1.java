@@ -12,9 +12,12 @@ package ou.maman_14_q1;
 public class MAMAN_14_Q1 {
 
     public static void main(String[] args) {
-        System.out.println("Running Test");
-        TestString ts = new TestString();
-        System.out.println("\nTest Ended with result: " + ts.runTest());
+        
+        System.out.println("**** Running String Test ****");
+        System.out.println("\n >>> Result: " + TestString.runTest());
+        
+        System.out.println("\n*** Running Customer Test ****");
+        System.out.println("\n >>> Result: " + TestCustomer.runTest());
         
     }
 }
