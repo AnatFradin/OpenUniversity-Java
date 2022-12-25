@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="maman14_q2.FXMLDocumentController">
+    <children>
+        <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" minHeight="16" minWidth="69" prefHeight="26.0" prefWidth="799.0" text="My Calendar" textAlignment="CENTER" />
+      <FlowPane layoutY="38.0" prefHeight="162.0" prefWidth="320.0">
+         <children>
+            <HBox prefHeight="45.0" prefWidth="799.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="204.0" text="Select the Day" textAlignment="CENTER" />
+                  <ComboBox prefHeight="26.0" prefWidth="90.0" promptText="Day" />
+                  <ComboBox layoutX="10.0" layoutY="10.0" prefHeight="26.0" prefWidth="100.0" promptText="Month" />
+                  <ComboBox layoutX="160.0" layoutY="10.0" prefHeight="26.0" prefWidth="86.0" promptText="Year" />
+                  <Label layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="92.0" textAlignment="RIGHT" />
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Go" />
+               </children>
+            </HBox>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="34.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </GridPane>
+         </children>
+      </FlowPane>
+    </children>
+</AnchorPane>
