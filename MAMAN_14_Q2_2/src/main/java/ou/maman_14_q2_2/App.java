@@ -1,4 +1,4 @@
-package ou.maman14_q2_1;
+package ou.maman_14_q2_2;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("calendar"), 950, 750);
+        scene = new Scene(loadFXML("test"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }

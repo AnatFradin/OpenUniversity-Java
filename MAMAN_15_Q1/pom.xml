@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>OU</groupId>
-    <artifactId>MAMAN_14_Q1</artifactId>
+    <artifactId>MAMAN_15</artifactId>
     <version>1</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <exec.mainClass>MAMAN_14_Q1</exec.mainClass>
+        <exec.mainClass>ou.maman_15_q1.MAMAN_15</exec.mainClass>
     </properties>
     <build>
     <plugins>
@@ -20,11 +20,12 @@
           <configuration>
               <archive>
                   <manifest>
-                      <mainClass>ou.maman_14_q1.MAMAN_14_Q1</mainClass>
+                      <mainClass>ou.maman_15_q1.MAMAN_15</mainClass>
                   </manifest>
               </archive>
           </configuration>
       </plugin>
   </plugins>
 </build>
+    <name>MAMAN_15_Q1</name>
 </project>
