@@ -13,9 +13,10 @@ import java.util.Random;
  */
 public class FindDiffThread extends Thread{
     private Random rand = new Random();
-    private Data data;
+    private IData data;
 
-    public FindDiffThread(Data data) {
+
+    public FindDiffThread(IData data) {
         this.data = data;
     }
     

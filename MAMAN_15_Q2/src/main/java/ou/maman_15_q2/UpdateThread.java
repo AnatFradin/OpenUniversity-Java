@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class UpdateThread extends Thread {
     private Random rand = new Random();
-    private Data data;
+    private IData data;
 
-    public UpdateThread(Data data) {
+    public UpdateThread(IData data) {
         this.data = data;
     }
     
@@ -27,7 +27,6 @@ public class UpdateThread extends Thread {
             int newX = rand.nextInt(100);
             int newY = rand.nextInt(100);
             data.update(newX, newY);
-            System.out.println("After update: " + data.toString());
             try {
                 sleep(rand.nextInt(100)); // sleep randomly 100 ms
             } catch (InterruptedException ex) {
